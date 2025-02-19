@@ -42,7 +42,7 @@ const TestAttempt = () => {
     const saveData = async() => {
         const userResponse = questions;
         try {
-            const response = await axios.post(`${process.env.TEST_URL}/submitTest`, { questions: userResponse, testId: testDetails.testId }, { withCredentials: true });
+            const response = await axios.post(`${process.env.REACT_APP_TEST_URL}/submitTest`, { questions: userResponse, testId: testDetails.testId }, { withCredentials: true });
             if (response.data.success)
             { console.log(response.data.message)}
         } catch (error) {

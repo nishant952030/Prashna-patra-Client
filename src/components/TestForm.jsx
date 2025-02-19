@@ -48,7 +48,7 @@ const TestForm = () => {
 
         setError(false);
         try {
-            const response = await axios.post(`${process.env.TEST_URL}/generate`, {
+            const response = await axios.post(`${process.env.REACT_APP_TEST_URL}/generate`, {
                 formData,
             });
 
@@ -65,7 +65,7 @@ const TestForm = () => {
     const attemptLater = async () => {
         console.log(questions)
         try {
-            const response = await axios.post(`${process.env.TEST_URL}/createTes`,
+            const response = await axios.post(`${process.env.REACT_APP_TEST_URL}/createTes`,
                 { formData, questionsArray: questions }, { withCredentials: true }
             );
             if (response.data.success) {
@@ -83,7 +83,7 @@ const TestForm = () => {
     const attemptNow = async () => {
         console.log(questions);
         try {
-            const response = await axios.post(`${process.env.TEST_URL}/createTest`,
+            const response = await axios.post(`${process.env.REACT_APP_TEST_URL}/createTest`,
                 { formData, questionsArray: questions }, { withCredentials: true }
             );
             if (response.data.success) {

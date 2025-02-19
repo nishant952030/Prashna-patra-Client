@@ -15,7 +15,7 @@ const CreateSubjectModal = ({ isOpen, onClose, onSubjectCreated }) => {
 
         setLoading(true);
         try {
-            const response = await axios.post(`${process.env.SUBJECT_URL}/create-subject`, { subject },{withCredentials:true});
+            const response = await axios.post(`${process.env.REACT_APP_SUBJECT_URL}/create-subject`, { subject },{withCredentials:true});
             if (!response.data.success) {
                 setError(response.data.message);
                 return

@@ -14,7 +14,7 @@ const Sidebar = () => {
         const fetchSubjects = async () => {
             setSubjectLoading(true);
             try {
-                const response = await axios.get(`${process.env.SUBJECT_URL}/all-subjects`, { withCredentials: true });
+                const response = await axios.get(`${process.env.REACT_APP_SUBJECT_URL}/all-subjects`, { withCredentials: true });
                 if (response.data.success) {
                     setTotalSubjects(response.data.allSubjects);
                 }

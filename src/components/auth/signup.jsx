@@ -23,7 +23,7 @@ const SignupForm = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const isLoggedIn = useSelector((store) => store.auth.isLoggedIn);
-
+    console.log(" this is from the signup page",process.env.REACT_APP_AUTH_URL)
     useEffect(() => {
         if (isLoggedIn) {
             navigate("/home");
@@ -40,7 +40,7 @@ const SignupForm = () => {
             const idToken = await user.getIdToken();
             console.log(idToken)
            
-            const response = await axios.post(`${process.env.AUTH_URL}/googleAuth`, {
+            const response = await axios.post(`${process.env.REACT_APP_AUTH_URL}/googleAuth`, {
                 idToken,
             }, { withCredentials: true });
             if (response.data.success) {

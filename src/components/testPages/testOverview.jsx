@@ -19,7 +19,7 @@ const TestOverview = () => {
   useEffect(() => {
     const fetchTests = async () => {
       try {
-        const response = await axios.get(`${process.env.TEST_URL}/fetchTests/${subjectId}`, { withCredentials: true });
+        const response = await axios.get(`${process.env.REACT_APP_TEST_URL}/fetchTests/${subjectId}`, { withCredentials: true });
         setTests(response.data.tests);
         setAvg(average(response.data.tests));
       } catch (err) {
@@ -39,7 +39,7 @@ const TestOverview = () => {
   useEffect(() => {
     const fetchSubjectDetails = async () => {
       try {
-        const response = await axios.get(`${process.env.SUBJECT_URL}/subjectDetails/${subjectId}`, { withCredentials: true });
+        const response = await axios.get(`${process.env.REACT_APP_SUBJECT_URL}/subjectDetails/${subjectId}`, { withCredentials: true });
         console.log(response)
         if (response.data.success) {
           setSubjectdetails(response.data.subject);
@@ -59,7 +59,7 @@ const TestOverview = () => {
   }
   const fetchQuestions = async (testId) => {
     try {
-      const response = await axios.get(`${process.env.TEST_URL}/testDetails/${testId}`, { withCredentials: true });
+      const response = await axios.get(`${process.env.REACT_APP_TEST_URL}/testDetails/${testId}`, { withCredentials: true });
       if (response.data.success) {
         console.log(response.data.test.generatedQuestions)
         const sanitizedQuestions = response.data.test.generatedQuestions.map(({ correctAnswer, ...q }) => ({
@@ -135,7 +135,7 @@ const TestOverview = () => {
     if (window.confirm("Do you want to delete the test?")) {
       try {
         const testId = testid;
-        const response = await axios.get(`${process.env.TEST_URL}/deleteTest/${testId}`, { withCredentials: true });
+        const response = await axios.get(`${process.env.REACT_APP_TEST_URL}/deleteTest/${testId}`, { withCredentials: true });
         if (response.data.success) {
           handleTestDelete(testId)
         }

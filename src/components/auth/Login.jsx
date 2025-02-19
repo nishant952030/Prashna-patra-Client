@@ -39,7 +39,7 @@ const Login = () => {
             const idToken = await user.getIdToken();
             console.log(idToken)
 
-            const response = await axios.post(`${process.env.AUTH_URL}/googleAuth`, {
+            const response = await axios.post(`${process.env.REACT_APP_AUTH_URL}/googleAuth`, {
                 idToken,
             },{withCredentials:true});
             if (response.data.success) {

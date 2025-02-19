@@ -65,7 +65,7 @@ const TestForm = () => {
     const attemptLater = async () => {
         console.log(questions)
         try {
-            const response = await axios.post(`${process.env.REACT_APP_TEST_URL}/createTes`,
+            const response = await axios.post(`${process.env.REACT_APP_TEST_URL}/createTest`,
                 { formData, questionsArray: questions }, { withCredentials: true }
             );
             if (response.data.success) {

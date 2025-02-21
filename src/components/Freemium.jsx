@@ -16,9 +16,9 @@ const PricingPage = ({ onClose }) => {
         },
         {
             name: "Premium Plan",
-            originalPrice: "999",
-            price: "799",
-            discount: "20%",
+            originalPrice: "99",
+            price: "49",
+            discount: "50%",
             period: "month",
             description: "For professionals who need more",
             features: [
@@ -38,6 +38,7 @@ const PricingPage = ({ onClose }) => {
             navigate("/home");
             return;
         }
+        onClose()
         navigate("/payment");
      }
     return (

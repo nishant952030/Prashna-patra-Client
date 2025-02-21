@@ -23,7 +23,7 @@ const TakePayment = () => {
         setLoading(true);
         try {
             const res = await axios.post(
-                `${process.env.REACT_APP_PAYMENT}/orders,
+                `${process.env.REACT_APP_PAYMENT_URL}/orders`,
                 { amount: priceDetails.finalPrice, currency: "INR" },
                 { withCredentials: true }
             );

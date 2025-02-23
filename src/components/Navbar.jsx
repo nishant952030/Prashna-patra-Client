@@ -177,20 +177,19 @@ const Navbar = () => {
                             </>
                         ) : (
                             <>
-                                <motion.Link
-                                    to="/login"
-                                    className="px-6 py-2 bg-gray-600 hover:bg-gray-700 rounded-full text-white"
-                                    whileHover={{ scale: 1.1 }}
-                                >
-                                    Login
-                                </motion.Link>
-                                <motion.Link
-                                    to="/signup"
-                                    className="px-6 py-2 bg-gray-500 hover:bg-gray-600 rounded-full text-white"
-                                    whileHover={{ scale: 1.1 }}
-                                >
-                                    Sign Up
-                                </motion.Link>
+                                    <Link
+                                        to="/login"
+                                        className="px-6 py-2 bg-gray-600 hover:bg-gray-700 rounded-full text-white"
+                                    >
+                                        Login
+                                    </Link>
+                                    <Link
+                                        to="/signup"
+                                        className="px-6 py-2 bg-gray-500 hover:bg-gray-600 rounded-full text-white"
+                                    >
+                                        Sign Up
+                                    </Link>
+
                             </>
                         )}
                     </motion.div>

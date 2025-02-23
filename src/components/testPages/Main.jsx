@@ -114,7 +114,7 @@ const TestAttempt = () => {
     return (
         <div className="flex relative h-screen max-h-[calc(100vh-72px)] bg-gray-900 text-white">
             {/* Mobile navigation buttons */}
-            <div className="fixed top-0 left-0 right-0 z-50 flex justify-between p-4 bg-gray-800 md:hidden">
+            <div className="fixed top-0 left-0 right-0  flex justify-between p-4 bg-gray-800 md:hidden">
                 <button
                     onClick={() => setShowQuestionList(!showQuestionList)}
                     className="p-2 bg-gray-700 rounded-md"
@@ -155,9 +155,9 @@ const TestAttempt = () => {
             </div>
 
             {/* Main content */}
-            <div className="flex-1 p-4 md:p-6 mt-16 md:mt-0">
+            <div className="flex-1 p-4  ">
                 <div className="flex flex-col h-full">
-                    <div className="bg-gray-500 text-white p-3 md:p-5 rounded-md mb-4 flex justify-between flex-wrap">
+                    <div className="bg-gray-500 text-white p-3 md:p-5 rounded-md mb-4 flex justify-between items-center flex-wrap">
                         <h1 className="text-lg md:text-xl font-bold capitalize mb-2">Test: {testDetails?.name}</h1>
                         <div className="flex flex-wrap gap-2 md:gap-3 items-center">
                             <div className="p-2 rounded-md bg-slate-800">
@@ -207,14 +207,13 @@ const TestAttempt = () => {
                     </div>
                 </div>
             </div>
-
-            {/* Status sidebar - hidden on mobile by default */}
-            <div className={`fixed md:relative right-0 w-4/5 md:w-1/5 h-full bg-gray-800 transform transition-transform duration-300 ease-in-out z-40
+ 
+            <div className={`fixed md:relative right-0 max-w-96  md:w-80   h-screen max-h-[calc(100vh-78px)] bg-gray-800 transform transition-transform duration-300 ease-in-out z-40
                 ${showStatus ? 'translate-x-0' : 'translate-x-full'} md:translate-x-0`}>
                 <div className="p-4 h-full flex flex-col justify-between">
                     <div>
                         <h2 className="text-lg font-bold mb-4">Question Status</h2>
-                        <div className="grid grid-cols-5 gap-2">
+                        <div className="grid  grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2">
                             {questions.map((q, index) => (
                                 <div
                                     key={index}

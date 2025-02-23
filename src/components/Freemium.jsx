@@ -42,7 +42,7 @@ const PricingPage = ({ onClose }) => {
         navigate("/payment");
      }
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm z-50">
             <div className="bg-gray-900 p-8 rounded-xl shadow-2xl w-full max-w-4xl relative border border-gray-800">
                 <div className="absolute top-4 right-4">
                     <button

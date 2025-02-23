@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
 import axios from "axios";
 import React, { useDebugValue, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setIsTestOn, setQuestions, setTestDetails, setTimeStartedAt } from "../redux/questionSlice";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { ClipLoader } from "react-spinners";
+import { setUser } from "../redux/slice";
+import { toast } from "react-toastify";
 
 const TestForm = () => {
     const { subjectId } = useParams();
@@ -18,14 +20,22 @@ const TestForm = () => {
         negative: false,
         timePerQuestion: 90
     });
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { user } = useSelector((store) => store.auth)
+    const [attemptLeft, setAttempt] = useState(user.freeTestsRemaining);
+    const [isPremium, setisPremium] = useState(user.planType);
+    const buttonText = isPremium === "free" ? attemptLeft > 0 ? `${attemptLeft} tests remaining` : "Upgrade" : "Generate Prash Patra";
     const [showAttemptLaterMessage, setShowAttemtLaterMessage] = useState(false);
     const [testGenerated, setTestGenerated] = useState(false);
     const [isGenerating, setIsGenerating] = useState(false);
     const [error, setError] = useState(false);
     const [shake, setShake] = useState(false);
     const [questions, setQuestion] = useState([]);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+
+
+
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         setFormData((prev) => ({
@@ -38,30 +48,54 @@ const TestForm = () => {
         e.preventDefault();
         setIsGenerating(true);
 
+
         if (!formData.description || !formData.title) {
             setError(true);
             setShake(true);
-            setTimeout(() => setShake(false), 500); // Reset shake effect
+            setTimeout(() => setShake(false), 500);
             setIsGenerating(false);
             return;
         }
 
         setError(false);
-        try {
-            const response = await axios.post(`${process.env.REACT_APP_TEST_URL}/generate`, {
-                formData,
-            });
 
-            if (response.data.success) {
-                setTestGenerated(true);
-                setQuestion(response.data.jsonResponse.questions);
+
+        if ((user.planType === "free" && user.freeTestsRemaining > 0) || user.planType === "premium") {
+            try {
+
+                const response = await axios.post(`${process.env.REACT_APP_TEST_URL}/generate`, {
+                    formData,
+                });
+                if (response.data.success) {
+                    toast.success("Test generated Successfully")
+                    setTestGenerated(true);
+                    setQuestion(response.data.jsonResponse.questions)
+                }
+
+                if (response.data.success && user.planType === "free") {
+                    const update = await axios.get(`${process.env.REACT_APP_USER_URL}/update-user-remaining-tests`, {
+                        withCredentials: true
+                    });
+                    if (update.data.success) {
+                        dispatch(setUser(update.data.user));
+                    }
+                }
+                if (!response.data.success) {
+                    toast.error("Couldn't generate , Try again")
+                    return
+                }
+
+            } catch (error) {
+                console.error("Error generating test:", error);
             }
-        } catch (error) {
-            console.error(error);
+        } else {
+            toast.error("User has no remaining free tests.");
         }
+
+        setIsGenerating(false);
     };
 
-   
+
     const attemptLater = async () => {
         console.log(questions)
         try {
@@ -71,6 +105,7 @@ const TestForm = () => {
             if (response.data.success) {
                 setShowAttemtLaterMessage(true);
                 setTestGenerated(false);
+                toast.success("Test saved successfully")
                 navigate(`/home/subject/${subjectId}`, { replace: true });
             }
         } catch (error) {
@@ -87,7 +122,7 @@ const TestForm = () => {
                 { formData, questionsArray: questions }, { withCredentials: true }
             );
             if (response.data.success) {
-               
+
                 const sanitizedQuestions = questions.map(({ correctAnswer, ...q }) => ({
                     ...q
                 }));
@@ -101,7 +136,7 @@ const TestForm = () => {
                 dispatch(setQuestions(sanitizedQuestions))
                 dispatch(setIsTestOn(true))
                 dispatch(setTestDetails(testDetailsForRedux))
-
+                toast.success("Your test starts Now")
                 dispatch(setTimeStartedAt(Date.now()))
                 navigate("/attemptTest", { replace: true })
 
@@ -117,8 +152,19 @@ const TestForm = () => {
 
 
                 {!testGenerated ? (
-                    <motion.div className="w-full max-w-md bg-gray-800 rounded-lg shadow-xl p-6 space-y-6" animate={shake ? { x: [-10, 10, -10, 10, 0] } : {}}
-                        transition={{ duration: 0.5 }} >
+                    <motion.div
+                        className="w-full max-w-md bg-gray-800 rounded-lg shadow-xl p-6 space-y-6"
+                        initial={{ scale: 0.5, opacity: 0 }}
+                        animate={{
+                            scale: 1,
+                            opacity: 1,
+                            x: shake ? [-10, 10, -10, 10, 0] : 0
+                        }}
+                        transition={{
+                            duration: 0.2,
+                            ease: "easeOut"
+                        }}
+                    >
                         {/* Shake Animation on Error */}
                         <h1
                             className="text-2xl font-bold text-white mb-6"
@@ -239,7 +285,7 @@ const TestForm = () => {
                                 type="submit"
                                 className="w-full bg-orange-600 hover:bg-orange-700 text-white font-medium py-2 px-4 rounded-md transition duration-200 ease-in-out transform hover:scale-[1.02]"
                             >
-                                {!isGenerating ? "Generate Prashn Patra" : <ClipLoader color={"white"} size={20} />}
+                                {!isGenerating ? `${buttonText}` : <ClipLoader color={"white"} size={20} />}
                             </button>
                             {error && <h6 className="text-red-500 text-sm mt-2">Please provide a title and description.</h6>}
                         </form>

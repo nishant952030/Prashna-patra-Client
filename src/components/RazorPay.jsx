@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 const TakePayment = () => {
     const [loading, setLoading] = useState(false);
-
+    const {user}=useSelector((store)=>store.auth)
     const productFeatures = [
         "Unlimited AI-Generated Tests",
         "Multiple Subject Support",
@@ -16,7 +17,7 @@ const TakePayment = () => {
     const priceDetails = {
         basePrice: 99,
         discount: 50,
-        finalPrice: 49
+        finalPrice: 1
     };
 
     const handleCheckout = async () => {
@@ -32,17 +33,16 @@ const TakePayment = () => {
                 key: res.data.key_id,
                 amount: res.data.amount,
                 currency: res.data.currency,
-                name: "Test Generator Pro",
+                name: "Prashna Patra Pro",
                 description: "Access to AI-powered Test Generator",
                 order_id: res.data.order_id,
                 handler: function (response) {
-                    alert("Payment Successful: " + response.razorpay_payment_id);
-                    window.location.href = "/payment-success";
+                    window.location.href = `/payment-success?payment_id=${response.razorpay_payment_id}&order_id=${response.razorpay_order_id}&amount=${priceDetails.finalPrice}&success=true`;
                 },
                 prefill: {
-                    name: "John Doe",
-                    email: "john@example.com",
-                    contact: "9999999999",
+                    name: user.name,
+                    email: user.email,
+                    contact: "9520303583",
                 },
                 theme: {
                     color: "#4F46E5"
@@ -60,7 +60,7 @@ const TakePayment = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+        <div className="h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden">
                     {/* Product Header */}

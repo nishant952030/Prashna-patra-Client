@@ -146,44 +146,56 @@ const TestOverview = () => {
   }
 
   return (
-    <div className="p-6 bg-gray-800 max-w-6xl w-full rounded-md h-full max-h-[calc(100vh-120px)]  ">
-      <div className="flex justify-between items-center">
+    <div className="sm:p-6 p-2 bg-gray-800 max-w-6xl w-full rounded-md h-screen max-h-[calc(100vh-70px)] md:max-h-[calc(100vh-120px)] ">
+      {/* Header Section */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
         <div>
           <h1 className="text-2xl font-bold">
-            <span className="text-orange-500 uppercase">{subjectdetails?.subjectName || "subject"}</span>
+            <span className="text-orange-500 uppercase">{subjectdetails?.subjectName || "Subject"}</span>
           </h1>
-          <div className="grid grid-cols-2 w-96 gap-2 text-gray-400 pt-2">
-
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 text-gray-400 pt-2">
             <h2>Total Tests: {subjectdetails?.totalTests}</h2>
             <h2>Attempted: {attemptedtest}</h2>
             <h2>Average Score: {avg}%</h2>
             <h2>Highest Score: {highest}%</h2>
           </div>
         </div>
-        <button className="bg-orange-600 p-3 text-white rounded-md font-semibold" onClick={openTestForm}>Create New</button>
+        <div className="flex justify-end">
+          <button
+            className="bg-orange-600 px-4 py-2 ml-auto text-white rounded-md font-semibold mt-4 md:mt-0"
+            onClick={openTestForm}
+          >
+            Create New
+          </button></div>
       </div>
-      <hr className="mt-8"></hr>
+
+      <hr className="mt-6" />
+
+      {/* Test List */}
       {tests.length === 0 ? (
-        <p className="text-gray-400">No tests found for this subject.</p>
+        <p className="text-gray-400 text-center py-4">No tests found for this subject.</p>
       ) : (
-        <ul className="space-y-4 pt-4 max-h-[calc(100%-120px)]
- overflow-y-scroll">
+        <ul className="space-y-4 pt-4 max-h-[calc(100%-120px)] overflow-y-auto">
           {tests.map((test) => (
             <li key={test._id} className="bg-gray-700 p-4 rounded-md">
-              <div className="flex justify-between items-center">
-                <div>
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center">
+                {/* Test Info */}
+                <div className="w-full">
                   <h3 className="text-xl font-semibold text-white uppercase">{test.title}</h3>
                   <p
                     className="text-gray-400 cursor-pointer"
                     onClick={() => setExpanded(!expanded)}
                   >
-                    {expanded ? test.description : test.description.split(" ").slice(0, 10).join(" ") + (test.description.split(" ").length > 10 ? "..." : "")}
+                    {expanded
+                      ? test.description
+                      : test.description.split(" ").slice(0, 10).join(" ") + (test.description.split(" ").length > 10 ? "..." : "")}
                   </p>
 
                   <div className="mt-2 text-sm">
-                    <span className="text-gray-100">Questions: <span className="text-bold text-xl text-gray-300"> {test.attemptedQuestions}</span>/{test.numberOfQuestions}</span>
+                    <span className="text-gray-100">Questions: <span className="font-bold text-gray-300">{test.attemptedQuestions}</span> / {test.numberOfQuestions}</span>
                     <span className="ml-4">
-                      Difficulty: {test.difficulty === "hard" ? (
+                      Difficulty:{" "}
+                      {test.difficulty === "hard" ? (
                         <span className="text-red-600">Hard</span>
                       ) : test.difficulty === "medium" ? (
                         <span className="text-yellow-600">Medium</span>
@@ -196,39 +208,46 @@ const TestOverview = () => {
                       <span className="ml-4 text-blue-400">
                         Score: {test.score !== null ? (
                           <>
-                            <span className="text-bold text-xl text-green-400">{test.score}</span> / {test.generatedQuestions.length}
+                            <span className="font-bold text-green-400">{test.score}</span> / {test.generatedQuestions.length}
                           </>
                         ) : "N/A"}
                       </span>
                     )}
                   </div>
                 </div>
-                <div className=" flex items-center gap-2">
+
+                {/* Actions */}
+                <div className="flex items-center justify-end gap-2 mt-4 md:mt-0 w-full">
                   <span className="p-2">{test.isAttempted ? <CircleCheck size={30} color={"green"} /> : <CircleCheck size={30} />}</span>
-                  <button className="bg-orange-600 text-white p-2 rounded-md" onClick={() => attemptTest(test._id)}>{test.isAttempted ? "Solutions" : "Attempt Now"}</button>
-                  <button className="hover:bg-gray-500 p-2 rounded-full" onClick={() => deletetest(test._id)}><Trash2 /></button>
+                  <button
+                    className="bg-orange-600 text-white px-3 py-2 rounded-md"
+                    onClick={() => attemptTest(test._id)}
+                  >
+                    {test.isAttempted ? "Solutions" : "Attempt Now"}
+                  </button>
+                  <button className="hover:bg-gray-500 p-2 rounded-full" onClick={() => deletetest(test._id)}>
+                    <Trash2 />
+                  </button>
                 </div>
               </div>
             </li>
           ))}
         </ul>
       )}
-      {preparing &&
-        <div class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
 
-          <div class="bg-gray-700 p-6 rounded-lg shadow-lg w-96">
-            <div class="flex flex-col items-center">
-
-              <h2 class="text-xl font-semibold mb-4">Your test is being prepared...</h2>
-
-
-              <div class="flex justify-center items-center space-x-2">
+      {/* Preparing Modal */}
+      {preparing && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+          <div className="bg-gray-700 p-6 rounded-lg shadow-lg w-96">
+            <div className="flex flex-col items-center">
+              <h2 className="text-xl font-semibold mb-4 text-white">Your test is being prepared...</h2>
+              <div className="flex justify-center items-center space-x-2">
                 <ClipLoader color="#ea580c" />
               </div>
             </div>
           </div>
         </div>
-      }
+      )}
     </div>
   );
 };

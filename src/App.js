@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Outlet, useLocation, useNavigate } from "react-router-dom";
-import Home from "./components/Home";
-
+ 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import "./index.css";
 
 import Navbar from "./components/Navbar";
-import { useSelector } from "react-redux";
+ 
 import ProtectedNavigation from "./components/ProtectedRoute";
 
 
@@ -14,9 +15,11 @@ function App() {
 
   return (
     <ProtectedNavigation>
+      <ToastContainer position="top-center" autoClose={3000} />
       <div className="App max-h-screen">
         <Navbar/>
-        <Outlet/>
+        <Outlet />
+
       </div>
     </ProtectedNavigation>
   );

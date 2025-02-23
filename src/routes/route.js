@@ -13,6 +13,7 @@ import ContactUs from "../components/termsAndConditions/ContactUs.jsx";
 import RefundPolicy from "../components/termsAndConditions/RefundPolicy.jsx";
 import ShippingOlicy from "../components/termsAndConditions/ShippingOlicy.jsx";
 import TakePayment from "../components/RazorPay.jsx";
+import PaymentSuccess from "../components/payments/Success.jsx";
 const { createBrowserRouter } = require("react-router-dom");
 
 const router = createBrowserRouter([
@@ -45,6 +46,10 @@ const router = createBrowserRouter([
             {
                 path: "payment",
                 element: <TakePayment />,
+            },
+            {
+                path: "payment-success",
+                element:<PaymentSuccess/>
             },
             {
                 path: "signup",

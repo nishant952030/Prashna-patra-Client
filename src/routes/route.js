@@ -49,7 +49,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "payment-success",
-                element:<PaymentSuccess/>
+                element: <PaymentSuccess />
             },
             {
                 path: "signup",
@@ -61,20 +61,24 @@ const router = createBrowserRouter([
             },
             {
                 path: "/contact-us",
-                element:<ContactUs/>
+                element: <ContactUs />
             },
             {
                 path: "/terms-and-condition",
-                element:<PrivacyPolicy/>
+                element: <PrivacyPolicy />
             },
             {
                 path: "/refund-policy",
-                element:<RefundPolicy/>
+                element: <RefundPolicy />
             },
             {
                 path: "/shipping-policy",
-                element:<ShippingOlicy/>
+                element: <ShippingOlicy />
             },
+            {
+                path: "/solutions",
+                element: <Main />
+            }
         ],
     },
 ]);

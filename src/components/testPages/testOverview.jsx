@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { Trash2 } from 'lucide-react';
 import { ClipLoader } from "react-spinners";
 import { useDispatch } from "react-redux";
 import { CircleCheck } from 'lucide-react';
 import { setQuestions, setTimeStartedAt, setTestDetails, setIsTestOn } from "../../redux/questionSlice";
+import { setUser } from "../../redux/slice";
 const TestOverview = () => {
   const { subjectId } = useParams(); // Get subjectId from the URL
   const [tests, setTests] = useState([]);
@@ -16,6 +17,8 @@ const TestOverview = () => {
   const [preparing, setPreparing] = useState(false)
   const [avg, setAvg] = useState(null);
   const [expanded, setExpanded] = useState(false)
+  const [showSolutions, setShowSolutions] = useState(false)
+ 
   useEffect(() => {
     const fetchTests = async () => {
       try {
@@ -35,6 +38,8 @@ const TestOverview = () => {
 
     fetchTests();
   }, [subjectId]);
+
+
   const [subjectdetails, setSubjectdetails] = useState(null);
   useEffect(() => {
     const fetchSubjectDetails = async () => {
@@ -57,6 +62,7 @@ const TestOverview = () => {
     setPreparing(true)
     fetchQuestions(testId);
   }
+
   const fetchQuestions = async (testId) => {
     try {
       const response = await axios.get(`${process.env.REACT_APP_TEST_URL}/testDetails/${testId}`, { withCredentials: true });
@@ -89,6 +95,7 @@ const TestOverview = () => {
 
     }
   }
+
   const [attemptedtest, setAttemptedTest] = useState(null);
   const average = (tests) => {
     let totalScore = 0;
@@ -116,7 +123,9 @@ const TestOverview = () => {
 
 
 
-  if (loading) return <div className="text-gray-300">Loading tests...</div>;
+  if (loading)
+    return <div className="text-gray-300">
+      Loading tests...</div>;
   if (error) return <div className="text-red-500">{error}</div>;
 
 
@@ -143,6 +152,22 @@ const TestOverview = () => {
         console.log(error);
       }
     }
+  }
+
+  const getSolution = async (testId) => {
+    setShowSolutions(true);
+    try {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/solutions/get-solutions/${testId}`, { withCredentials: true })
+      if (response.data.success) {
+        dispatch(setQuestions(response.data.questions));
+        navigate("/solutions", { replace: true })
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setShowSolutions(false);
+    }
+
   }
 
   return (
@@ -219,12 +244,17 @@ const TestOverview = () => {
                 {/* Actions */}
                 <div className="flex items-center justify-end gap-2 mt-4 md:mt-0 w-full">
                   <span className="p-2">{test.isAttempted ? <CircleCheck size={30} color={"green"} /> : <CircleCheck size={30} />}</span>
-                  <button
-                    className="bg-orange-600 text-white px-3 py-2 rounded-md"
+                  {!test.isAttempted ? <button
+                    className="bg-orange-600 text-white px-3 py-2 rounded-md focus:bg-orange-700"
                     onClick={() => attemptTest(test._id)}
                   >
-                    {test.isAttempted ? "Solutions" : "Attempt Now"}
-                  </button>
+                    Attempt Now
+                  </button> : <button
+                    className="bg-orange-600 text-white px-3 py-2 rounded-md focus:bg-orange-700"
+                    onClick={() => getSolution(test._id)}
+                  >
+                     See Solutions
+                  </button>}
                   <button className="hover:bg-gray-500 p-2 rounded-full" onClick={() => deletetest(test._id)}>
                     <Trash2 />
                   </button>

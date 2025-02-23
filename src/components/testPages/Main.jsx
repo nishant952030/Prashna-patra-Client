@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { setIsTestOn, setQuestions, setTestDetails, setTimeStartedAt } from "../../redux/questionSlice";
 import { Menu, X, List, CheckSquare } from "lucide-react";
 import axios from "axios";
@@ -21,13 +21,15 @@ const TestAttempt = () => {
         setQuestionsArray(allQuestions);
     }, [allQuestions]);
 
-    const [remainingTime, setRemainingTime] = useState(testDetails.timePerquestion * testDetails.numberOfQuestions * 1000);
-
+    const [remainingTime, setRemainingTime] = useState(testDetails?.timePerquestion * testDetails?.numberOfQuestions * 1000);
+ const location = useLocation();
+    const currentPath = location.pathname;
+    console.log(currentPath)
     useEffect(() => {
         if (timeStartedAt) {
             const updateRemainingTime = () => {
                 const elapsedTime = Date.now() - timeStartedAt;
-                const newRemainingTime = Math.max(testDetails.timePerquestion * testDetails.numberOfQuestions * 1000 - elapsedTime, 0);
+                const newRemainingTime = Math.max(testDetails?.timePerquestion * testDetails?.numberOfQuestions * 1000 - elapsedTime, 0);
                 setRemainingTime(newRemainingTime);
             };
 
@@ -44,7 +46,7 @@ const TestAttempt = () => {
         try {
             const response = await axios.post(
                 `${process.env.REACT_APP_TEST_URL}/submitTest`,
-                { questions, testId: testDetails.testId },
+                { questions, testId: testDetails?.testId },
                 { withCredentials: true }
             );
             if (response.data.success) {
@@ -110,7 +112,6 @@ const TestAttempt = () => {
         );
         dispatch(setQuestions(updatedQuestions));
     };
-
     return (
         <div className="flex relative h-screen max-h-[calc(100vh-72px)] bg-gray-900 text-white">
             {/* Mobile navigation buttons */}
@@ -164,7 +165,7 @@ const TestAttempt = () => {
                                 Mark: <span className="text-green-500">1</span>
                             </div>
                             <div className="p-2 rounded-md bg-slate-800">
-                                Negative: <span className="text-red-500">{testDetails.negativeMarks ? "-0.25" : "0"}</span>
+                                Negative: <span className="text-red-500">{testDetails?.negativeMarks ? "-0.25" : "0"}</span>
                             </div>
                             <span className="text-orange-600 text-xl md:text-2xl">Time: {`${minutes}:${seconds}`}</span>
                         </div>
@@ -176,12 +177,15 @@ const TestAttempt = () => {
                             {questions[currentQuestionIndex]?.options.map((option, idx) => (
                                 <div
                                     key={idx}
-                                    className={`${option === questions[currentQuestionIndex]?.userAnswer ? "bg-gray-500" : ""} 
-                                        p-3 border border-gray-700 rounded cursor-pointer hover:bg-gray-700`}
+                                    className={`p-3 border border-gray-700 rounded cursor-pointer hover:bg-gray-700
+    ${currentPath === "/solutions" && option === questions[currentQuestionIndex]?.correctAnswer ? "bg-green-400" : ""}
+    ${currentPath === "/solutions" && option === questions[currentQuestionIndex]?.userAnswer && option !== questions[currentQuestionIndex]?.correctAnswer ? "bg-gray-500" : ""}
+  `}
                                     onClick={() => handleOptionSelect(option, currentQuestionIndex)}
                                 >
                                     {option}
                                 </div>
+
                             ))}
                         </div>
                     </div>
@@ -224,12 +228,12 @@ const TestAttempt = () => {
                             ))}
                         </div>
                     </div>
-                    <button
+                    {currentPath !== "/solutions" && <button
                         className="w-full px-4 py-2 bg-orange-600 hover:bg-orange-700 rounded"
                         onClick={handleSubmit}
                     >
                         Submit Test
-                    </button>
+                    </button>}
                 </div>
             </div>
         </div>

@@ -37,7 +37,7 @@ const Login = () => {
             const result = await signInWithPopup(auth, provider);
             const user = result.user;
             const idToken = await user.getIdToken();
-            console.log(idToken)
+     
 
             const response = await axios.post(`${process.env.REACT_APP_AUTH_URL}/googleAuth`, {
                 idToken,
@@ -47,7 +47,7 @@ const Login = () => {
                     dispatch(setIsLoggedIn(true))
                     navigate('/home')
                 }
-            console.log("User authenticated successfully:", response.data);
+        
             localStorage.setItem("token", response.data.token);
         } catch (error) {
             console.error("❌ Login Failed:", error);

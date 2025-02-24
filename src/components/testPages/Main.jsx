@@ -50,7 +50,7 @@ const TestAttempt = () => {
                 { withCredentials: true }
             );
             if (response.data.success) {
-                console.log(response.data.message);
+               
             }
         } catch (error) {
             console.log(error);

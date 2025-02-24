@@ -45,7 +45,7 @@ const TestOverview = () => {
     const fetchSubjectDetails = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_SUBJECT_URL}/subjectDetails/${subjectId}`, { withCredentials: true });
-        console.log(response)
+     
         if (response.data.success) {
           setSubjectdetails(response.data.subject);
         }

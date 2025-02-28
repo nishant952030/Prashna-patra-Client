@@ -4,6 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import CreateSubjectModal from "./modals/CreateSubjectModal";
 import { Menu, X } from "lucide-react"; // Lucide React icons
 import { motion } from "framer-motion";
+import { ClipLoader } from "react-spinners";
 const Sidebar = () => {
     const [openModal, setOpenModal] = useState(false);
     const [totalSubjects, setTotalSubjects] = useState([]);
@@ -49,42 +50,46 @@ const Sidebar = () => {
                 {isSidebarOpen ? <X size={22} /> : <Menu size={22} />}
             </motion.button>
 
-            {/* Sidebar (Hidden on Small Screens) */}
-            <div className={`fixed lg:relative lg:top-0 top-16 left-0 h-[calc(100vh-60px)] sm:w-96 w-full bg-gray-800 text-white p-4 shadow-lg 
+            {
+                subjectLoading ? <ClipLoader color={"white"} size={30} /> :
+                 
+                    < div className={`fixed lg:relative lg:top-0 top-16 left-0 h-[calc(100vh-60px)] sm:w-96 w-full bg-gray-800 text-white p-4 shadow-lg 
 transform transition-transform duration-300 rounded-tr-md rounded-br-md
 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 lg:w-96`}>
 
-                <div className="flex flex-col justify-between h-full">
-                    <div>
-                        <h2 className="text-xl font-semibold mb-4 text-center">Subjects</h2>
-                        <div className="h-full w-full overflow-y-auto">
-                            <ul>
-                                {totalSubjects.map((subject) => (
-                                    <li key={subject._id}>
-                                        <Link
-                                            to={`/home/subject/${subject._id}`}
-                                            className={`block p-3 my-2 rounded-lg transition 
+            <div className="flex flex-col justify-between h-full">
+                <div>
+                    <h2 className="text-xl font-semibold mb-4 text-center">Subjects</h2>
+                    <div className="h-full w-full overflow-y-auto">
+                        <ul>
+                            {totalSubjects.map((subject) => (
+                                <li key={subject._id}>
+                                    <Link
+                                        to={`/home/subject/${subject._id}`}
+                                        className={`block p-3 my-2 rounded-lg transition 
                                                 ${subjectId === subject._id ? "bg-orange-600 text-white" : "bg-gray-700 hover:bg-gray-600"}`}
-                                            onClick={() => {
-                                                if (isSidebarOpen) {
-                                                    setIsSidebarOpen(false);
-                                             }}}
-                                        >
-                                            <span className="uppercase">{subject.subjectName}</span>
-                                        </Link>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                    <div>
-                        <button className="bg-orange-600 p-2 w-full rounded-md mt-auto" onClick={() => setOpenModal(true)}>
-                            Create New Subject
-                        </button>
+                                        onClick={() => {
+                                            if (isSidebarOpen) {
+                                                setIsSidebarOpen(false);
+                                            }
+                                        }}
+                                    >
+                                        <span className="uppercase">{subject.subjectName}</span>
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
                     </div>
                 </div>
+                <div>
+                    <button className="bg-orange-600 p-2 w-full rounded-md mt-auto" onClick={() => setOpenModal(true)}>
+                        Create New Subject
+                    </button>
+                </div>
             </div>
+        </div >
 
+           }
             {/* Modal */}
             {openModal && <CreateSubjectModal isOpen={openModal} onClose={() => setOpenModal(false)} onSubjectCreated={onSubjectCreated} />}
         </>

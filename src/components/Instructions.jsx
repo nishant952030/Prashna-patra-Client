@@ -21,6 +21,14 @@ const Instructions = () => {
                 </ul>
             </div>
 
+            <div className="bg-gray-700 rounded-lg w-fit p-5 mx-auto mt-4">
+                <h3 className="text-lg font-semibold mb-2">Viewing Scores & Solutions:</h3>
+                <ul className="list-disc pl-6 space-y-2">
+                    <li><b>For smaller screens:</b> Open the sidebar ➝ Choose a subject ➝ Click on the test ➝ View your score and solutions.</li>
+                    <li><b>For larger screens:</b> The sidebar is already open ➝ Choose a subject ➝ Click on the test ➝ View your score and solutions.</li>
+                </ul>
+            </div>
+
             <p className="mt-4 mx-auto">If you need help, refer to the documentation or contact support.</p>
         </div>
     );

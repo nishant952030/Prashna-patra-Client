@@ -28,8 +28,7 @@ const Navbar = () => {
                 sessionStorage.clear();
 
                 dispatch(logout());
-                navigate("/", { replace: true });
-                window.location.reload(); 
+                navigate("/", { replace: true }); 
             } catch (error) {
                 console.error("Logout failed", error);
             }

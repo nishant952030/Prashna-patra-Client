@@ -14,6 +14,8 @@ import RefundPolicy from "../components/termsAndConditions/RefundPolicy.jsx";
 import ShippingOlicy from "../components/termsAndConditions/ShippingOlicy.jsx";
 import TakePayment from "../components/RazorPay.jsx";
 import PaymentSuccess from "../components/payments/Success.jsx";
+import TestFormUnAuthorized from "../forUnauthorized/TestForm.jsx";
+import TestAttemptGuest from "../forUnauthorized/Main.jsx";
 const { createBrowserRouter } = require("react-router-dom");
 
 const router = createBrowserRouter([
@@ -23,7 +25,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <LandingPage />,
+                element: <TestFormUnAuthorized />,
             },
             {
                 path: "home",
@@ -58,6 +60,10 @@ const router = createBrowserRouter([
             {
                 path: "attemptTest",
                 element: <ProtectedRoute element={<Main />} />, // Protect this route
+            },
+            {
+                path: "guest/attemptTest",
+                element: <ProtectedRoute element={<TestAttemptGuest />} />, // Protect this route
             },
             {
                 path: "/contact-us",

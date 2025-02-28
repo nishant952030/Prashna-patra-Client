@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import { combineReducers } from "redux";
 import questions from "./questionSlice.js"
+import unauth from "./unauth"
 const persistConfig = {
     key: "root",
     storage,
@@ -11,7 +12,8 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     auth: authReducer,
-    questions:questions
+    questions: questions,
+    unAuth:unauth
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

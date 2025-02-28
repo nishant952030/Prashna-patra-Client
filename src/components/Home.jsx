@@ -19,7 +19,7 @@ const TestCreationForm = () => {
     }, [isLoggedIn, location, navigate]);
 
     return (
-        <div className="h-screen max-h-[calc(100vh-64px)] bg-gray-900 text-white flex">
+        <div className="h-screen max-h-[calc(100vh-60px)] bg-gray-900 text-white flex">
             <Sidebar />
             <div className="flex-1 p-1 sm:p-6">
                 {location.pathname === "/home" ? <Instructions /> : <Outlet />}

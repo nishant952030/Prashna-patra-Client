@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
-import { setIsTestOn, setQuestions, setTestDetails, setTimeStartedAt } from "../../redux/questionSlice";
+import { setIsTestOn, setQuestions, setTestDetails, setTimeStartedAt } from "../redux/questionSlice.js";
 import { Menu, X, List, CheckSquare } from "lucide-react";
 import axios from "axios";
+import TestSubmission from "./testsubmit.jsx";
+import { setModalOpen } from "../redux/unauth.js";
 
-const TestAttempt = () => {
+const TestAttemptGuest = () => {
     const [questions, setQuestionsArray] = useState([]);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedOptions, setSelectedOptions] = useState({});
     const [showQuestionList, setShowQuestionList] = useState(false);
     const [showStatus, setShowStatus] = useState(false);
-
     const allQuestions = useSelector((store) => store.questions.questions);
     const testDetails = useSelector((store) => store.questions.testDetails);
     const timeStartedAt = useSelector((store) => store.questions.timeStartedAt);
@@ -20,11 +21,9 @@ const TestAttempt = () => {
     useEffect(() => {
         setQuestionsArray(allQuestions);
     }, [allQuestions]);
-
     const [remainingTime, setRemainingTime] = useState(testDetails?.timePerquestion * testDetails?.numberOfQuestions * 1000);
- const location = useLocation();
+    const location = useLocation();
     const currentPath = location.pathname;
-    console.log(currentPath)
     useEffect(() => {
         if (timeStartedAt) {
             const updateRemainingTime = () => {
@@ -42,42 +41,40 @@ const TestAttempt = () => {
     const minutes = Math.floor(remainingTime / (60 * 1000));
     const seconds = Math.floor((remainingTime % (60 * 1000)) / 1000);
 
-    const saveData = async () => {
-        try {
-            const response = await axios.post(
-                `${process.env.REACT_APP_TEST_URL}/submitTest`,
-                { questions, testId: testDetails?.testId },
-                { withCredentials: true }
-            );
-            if (response.data.success) {
-               
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     const navigate = useNavigate();
     const handleSubmit = async () => {
         if (minutes === 0 && seconds === 0) {
-            saveData();
-            dispatch(setIsTestOn(false));
-            dispatch(setTestDetails(null));
-            dispatch(setQuestions(null));
-            dispatch(setTimeStartedAt(null));
-            navigate("/home", { replace: true });
+            saveTestAttemptData(); // Store attempt data before clearing Redux
+            clearTestState();
             alert("Successfully submitted your test!");
+            navigate("/", { replace: true });
             return;
         }
-
         if (window.confirm("Do you want to submit your test early?")) {
-            saveData();
-            dispatch(setIsTestOn(false));
-            dispatch(setTestDetails(null));
-            dispatch(setQuestions(false));
-            dispatch(setTimeStartedAt(null));
-            navigate("/home", { replace: true });
+            saveTestAttemptData();
+            clearTestState();
+            navigate("/", { replace: true });
         }
+    };
+
+    // Function to save test attempt data in localStorage
+    const saveTestAttemptData = () => {
+        const testAttempt = {
+            chosenAnswerQuestions: questions,
+            correctAnswersQuestions: JSON.parse(localStorage.getItem("testData"))?.fullData?.questions || [],
+            timestamp: Date.now()
+        };
+
+        localStorage.setItem("pendingTestAttempt", JSON.stringify(testAttempt));
+    };
+
+    // Function to clear test-related Redux state
+    const clearTestState = () => {
+        dispatch(setIsTestOn(false));
+        dispatch(setTestDetails(null));
+        dispatch(setQuestions(null));
+        dispatch(setTimeStartedAt(null));
+        dispatch(setModalOpen(true));
     };
 
     useEffect(() => {
@@ -178,9 +175,8 @@ const TestAttempt = () => {
                                 <div
                                     key={idx}
                                     className={`p-3 border border-gray-700 rounded cursor-pointer hover:bg-gray-700
-    ${currentPath === "/solutions" && option === questions[currentQuestionIndex]?.correctAnswer ? "bg-green-400" : ""}
-    ${currentPath === "/solutions" && option === questions[currentQuestionIndex]?.userAnswer && option !== questions[currentQuestionIndex]?.correctAnswer ? "bg-gray-500" :""}
-    ${currentPath==="/attemptTest" && option===questions[currentQuestionIndex]?.userAnswer?"bg-gray-500":""}
+
+    ${currentPath === "/guest/attemptTest" && option === questions[currentQuestionIndex]?.userAnswer ? "bg-gray-500" : ""}
   `}
                                     onClick={() => handleOptionSelect(option, currentQuestionIndex)}
                                 >
@@ -212,7 +208,7 @@ const TestAttempt = () => {
                     </div>
                 </div>
             </div>
- 
+
             <div className={`fixed md:relative right-0 max-w-96  md:w-80   h-screen max-h-[calc(100vh-78px)] bg-gray-800 transform transition-transform duration-300 ease-in-out z-40
                 ${showStatus ? 'translate-x-0' : 'translate-x-full'} md:translate-x-0`}>
                 <div className="p-4 h-full flex flex-col justify-between">
@@ -241,4 +237,4 @@ const TestAttempt = () => {
     );
 };
 
-export default TestAttempt;
+export default TestAttemptGuest;

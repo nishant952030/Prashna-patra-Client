@@ -5,17 +5,22 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 const ProtectedNavigation = ({ children }) => {
     const isTestOn = useSelector((state) => state.questions.isTestOn);
+    const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
     const location = useLocation();
     const navigate = useNavigate();
+    const path = isLoggedIn ? "/attemptTest" : "/guest/attemptTest";
 
     useEffect(() => {
-        if (isTestOn && location.pathname !== "/attemptTest") {
-            navigate("/attemptTest", { replace: true });
+        // The issue was in this condition - using OR (||) instead of AND (&&)
+        if (isTestOn && location.pathname !== path) {
+            navigate(path, { replace: true });
         }
-        if (!isTestOn && location.pathname === "/attemptTest") {
-            navigate("/home", { replace: true });
+
+        if (!isTestOn && (location.pathname === "/attemptTest" || location.pathname === "/guest/attemptTest")) {
+            if (location.pathname === "/guest/attemptTest") navigate("/",{replace:true})
+            else navigate("/home", { replace: true });
         }
-    }, [isTestOn, location, navigate]);
+    }, [isTestOn, location, navigate, path, isLoggedIn]);
 
     return children;
 };

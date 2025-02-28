@@ -50,7 +50,7 @@ const Sidebar = () => {
             </motion.button>
 
             {/* Sidebar (Hidden on Small Screens) */}
-            <div className={`fixed lg:relative lg:top-0 top-16 left-0 h-[calc(100vh-4rem)] sm:w-96 w-full bg-gray-800 text-white p-4 shadow-lg 
+            <div className={`fixed lg:relative lg:top-0 top-16 left-0 h-[calc(100vh-60px)] sm:w-96 w-full bg-gray-800 text-white p-4 shadow-lg 
 transform transition-transform duration-300 rounded-tr-md rounded-br-md
 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 lg:w-96`}>
 

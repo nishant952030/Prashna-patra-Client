@@ -217,7 +217,7 @@ const TestOverview = () => {
                   </p>
 
                   <div className="mt-2 text-sm">
-                    <span className="text-gray-100">Questions: <span className="font-bold text-gray-300">{test.attemptedQuestions}</span> / {test.numberOfQuestions}</span>
+                    <span className="text-gray-100">Questions: <span className="font-bold text-gray-300">{test.attemptedQuestions}</span> / {test.generatedQuestions.length}</span>
                     <span className="ml-4">
                       Difficulty:{" "}
                       {test.difficulty === "hard" ? (

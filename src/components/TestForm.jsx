@@ -147,13 +147,10 @@ const TestForm = () => {
     };
     return (
         <div className="flex justify-center items-center bg-gray-900 min-h-[calc(100vh-72px)]">
-            <div className="flex flex-col gap-10 justify-center">
-                {showAttemptLaterMessage && <div className="">Your <span className="text-orange-500">Prashn Patra</span> has been saved successfully. You can attempt it later.</div>}
-
-
+          
                 {!testGenerated ? (
                     <motion.div
-                        className="w-full max-w-md bg-gray-800 rounded-lg shadow-xl p-6 space-y-6"
+                        className="w-full max-w-4xl bg-gray-800 rounded-lg shadow-xl p-6 space-y-6"
                         initial={{ scale: 0.5, opacity: 0 }}
                         animate={{
                             scale: 1,
@@ -306,7 +303,7 @@ const TestForm = () => {
                     </div>
                 )}
 
-            </div>
+          
         </div>
     )
 }

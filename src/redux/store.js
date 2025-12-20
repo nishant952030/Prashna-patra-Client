@@ -5,6 +5,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import { combineReducers } from "redux";
 import questions from "./questionSlice.js"
 import unauth from "./unauth"
+import feedbackSlice from "./feedback.js"
 const persistConfig = {
     key: "root",
     storage,
@@ -13,7 +14,8 @@ const persistConfig = {
 const rootReducer = combineReducers({
     auth: authReducer,
     questions: questions,
-    unAuth:unauth
+    unAuth: unauth,
+    feedback:feedbackSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

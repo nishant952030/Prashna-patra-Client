@@ -12,7 +12,7 @@ import PrivacyPolicy from "../components/termsAndConditions/PrivacyPolicy.jsx";
 import ContactUs from "../components/termsAndConditions/ContactUs.jsx";
 import RefundPolicy from "../components/termsAndConditions/RefundPolicy.jsx";
 import ShippingOlicy from "../components/termsAndConditions/ShippingOlicy.jsx";
-import TakePayment from "../components/RazorPay.jsx";
+import TakePayment from "../components/PhonePe.jsx";
 import PaymentSuccess from "../components/payments/Success.jsx";
 import TestFormUnAuthorized from "../forUnauthorized/TestForm.jsx";
 import TestAttemptGuest from "../forUnauthorized/Main.jsx";
@@ -84,6 +84,10 @@ const router = createBrowserRouter([
             {
                 path: "/solutions",
                 element: <Main />
+            },
+            {
+                path: "landing-page",
+                element:<LandingPage/>
             }
         ],
     },

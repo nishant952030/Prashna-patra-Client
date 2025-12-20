@@ -1,8 +1,12 @@
 import { Check, X } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { createPortal } from "react-dom";
 
 const PricingPage = ({ onClose }) => {
+    const navigate = useNavigate();
+
     const plans = [
         {
             name: "Free Plan",
@@ -13,6 +17,7 @@ const PricingPage = ({ onClose }) => {
             missingFeatures: ["Advanced analytics", "Unlimited tests", "Priority support"],
             buttonText: "Get Started",
             isPremium: false,
+            icon: "🚀",
         },
         {
             name: "Premium Plan",
@@ -20,7 +25,7 @@ const PricingPage = ({ onClose }) => {
             price: "49",
             discount: "50%",
             period: "month",
-            description: "For professionals who need more",
+            description: "For students who need more",
             features: [
                 "Unlimited test generation",
                 "Advanced AI insights",
@@ -29,99 +34,202 @@ const PricingPage = ({ onClose }) => {
             ],
             buttonText: "Upgrade Now",
             isPremium: true,
+            icon: "⭐",
         },
     ];
-    const navigate=useNavigate()
 
-    const buttonAction = (text) => {
+    const handleClick = (text) => {
         if (text === "Get Started") {
             navigate("/home");
-            return;
+        } else {
+            navigate("/payment");
         }
-        onClose()
-        navigate("/payment");
-     }
-    return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/80 backdrop-blur-sm z-50">
-            <div className="bg-gray-900 p-8 rounded-xl shadow-2xl w-full max-w-4xl relative border border-gray-800">
-                <div className="absolute top-4 right-4">
-                    <button
+        onClose();
+    };
+
+    // 🔒 Lock background scroll
+    useEffect(() => {
+        const original = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+        return () => (document.body.style.overflow = original);
+    }, []);
+
+    // ⎋ Close on ESC
+    useEffect(() => {
+        const esc = (e) => e.key === "Escape" && onClose();
+        window.addEventListener("keydown", esc);
+        return () => window.removeEventListener("keydown", esc);
+    }, [onClose]);
+
+    return createPortal(
+        <>
+            {/* Backdrop */}
+            <div
+                className="fixed inset-0 z-[9998] bg-black/60 backdrop-blur-sm"
+                onClick={onClose}
+            />
+
+            {/* Modal */}
+            <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.3 }}
+                    className="relative w-full max-w-2xl bg-gradient-to-br from-[#0f1419] to-slate-950 rounded-xl p-6 md:p-8 border border-orange-500/30 shadow-2xl shadow-orange-500/20"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    {/* Background decorative elements */}
+                    <div className="absolute top-0 left-0 w-40 h-40 bg-orange-500/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+                    <div className="absolute bottom-0 right-0 w-40 h-40 bg-orange-500/5 rounded-full blur-3xl translate-x-1/2 translate-y-1/2 pointer-events-none" />
+
+                    {/* Close Button */}
+                    <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.95 }}
                         onClick={onClose}
-                        className="rounded-full p-2 hover:bg-gray-800 transition-colors"
+                        className="absolute top-4 right-4 p-2 rounded-full hover:bg-orange-500/20 transition-colors z-10"
                     >
-                        <X size={24} className="text-gray-400" />
-                    </button>
-                </div>
+                        <X className="text-orange-400" size={24} />
+                    </motion.button>
 
-                <div className="text-center mb-8">
-                    <h1 className="text-3xl font-bold text-white">Choose Your Plan</h1>
-                    <p className="text-gray-400 mt-2">Select the perfect plan for your needs</p>
-                </div>
+                    {/* Header */}
+                    <div className="relative z-10 mb-8">
+                        <h1 className="text-3xl md:text-4xl font-bold text-center text-white mb-2">
+                            Choose Your Plan
+                        </h1>
+                        <p className="text-center text-gray-400">
+                            Unlock your full potential and study smarter
+                        </p>
+                    </div>
 
-                <div className="grid md:grid-cols-2 gap-8">
-                    {plans.map((plan, index) => (
-                        <div
-                            key={index}
-                            className={`rounded-xl p-6 transition-all hover:shadow-xl ${plan.isPremium
-                                    ? "bg-gray-800 border-2 border-blue-500"
-                                    : "bg-gray-800 border border-gray-700"
-                                }`}
-                        >
-                            {plan.isPremium && (
-                                <div className="space-y-2">
-                                    <span className="bg-blue-500/20 text-blue-400 text-sm font-medium px-3 py-1 rounded-full">
-                                        Most Popular
-                                    </span>
-                                    <span className="bg-green-500/20 text-green-400 text-sm font-medium px-3 py-1 rounded-full ml-2">
-                                        Save {plan.discount}
-                                    </span>
-                                </div>
-                            )}
-
-                            <div className="mt-4">
-                                <h2 className="text-xl font-semibold text-white">{plan.name}</h2>
-                                <p className="text-gray-400 mt-2">{plan.description}</p>
-                            </div>
-
-                            <div className="mt-4 flex items-baseline">
-                                <span className="text-lg font-bold text-white mr-1">₹</span>
-                                <span className="text-4xl font-bold text-white">{plan.price}</span>
-                                <span className="text-gray-400 ml-2">/{plan.period}</span>
-                                {plan.originalPrice && (
-                                    <span className="ml-3 text-gray-500 line-through">
-                                        ₹{plan.originalPrice}/{plan.period}
-                                    </span>
-                                )}
-                            </div>
-
-                            <ul className="mt-6 space-y-3">
-                                {plan.features.map((feature, i) => (
-                                    <li key={i} className="flex items-center gap-3">
-                                        <Check size={18} className="text-green-400 flex-shrink-0" />
-                                        <span className="text-gray-300">{feature}</span>
-                                    </li>
-                                ))}
-                                {plan.missingFeatures?.map((feature, i) => (
-                                    <li key={i} className="flex items-center gap-3">
-                                        <X size={18} className="text-gray-600 flex-shrink-0" />
-                                        <span className="text-gray-500">{feature}</span>
-                                    </li>
-                                ))}
-                            </ul>
-
-                            <button onClick={()=>{buttonAction(plan.buttonText) }}
-                                className={`mt-8 w-full py-3 px-4 rounded-lg font-medium transition-colors ${plan.isPremium
-                                    ? "bg-gradient-to-r from-purple-500 to-blue-600 hover:from-purple-600 hover:to-blue-700"
-                                        : "bg-gray-700 text-gray-200 hover:bg-gray-600"
+                    {/* Plans Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+                        {plans.map((plan, i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: i * 0.1 }}
+                                whileHover={{ translateY: -4 }}
+                                className={`p-6 rounded-lg border transition-all relative overflow-hidden group ${plan.isPremium
+                                        ? "border-orange-500/60 bg-gradient-to-br from-orange-600/20 to-slate-900 shadow-lg shadow-orange-500/20"
+                                        : "border-orange-500/30 bg-[#0a0e14]/60 hover:border-orange-500/50"
                                     }`}
                             >
-                                {plan.buttonText}
-                            </button>
-                        </div>
-                    ))}
-                </div>
+                                {/* Glow effect for premium */}
+                                {plan.isPremium && (
+                                    <div className="absolute inset-0 bg-gradient-to-br from-orange-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+                                )}
+
+                                <div className="relative z-10">
+                                    {/* Icon */}
+                                    <div className="text-4xl mb-3">{plan.icon}</div>
+
+                                    {/* Badges */}
+                                    {plan.isPremium && (
+                                        <div className="flex flex-wrap gap-2 mb-4">
+                                            <motion.span
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: 1 }}
+                                                transition={{ delay: 0.2 }}
+                                                className="bg-orange-500/30 text-orange-300 text-xs font-semibold px-2 py-1 rounded-full border border-orange-500/50"
+                                            >
+                                                ✨ Popular
+                                            </motion.span>
+                                            <motion.span
+                                                initial={{ scale: 0 }}
+                                                animate={{ scale: 1 }}
+                                                transition={{ delay: 0.25 }}
+                                                className="bg-green-500/30 text-green-300 text-xs font-semibold px-2 py-1 rounded-full border border-green-500/50"
+                                            >
+                                                Save {plan.discount}
+                                            </motion.span>
+                                        </div>
+                                    )}
+
+                                    {/* Title & Description */}
+                                    <h2 className="text-xl font-bold text-white mb-1">{plan.name}</h2>
+                                    <p className="text-gray-400 text-sm mb-4">
+                                        {plan.description}
+                                    </p>
+
+                                    {/* Pricing */}
+                                    <div className="mb-5 p-3 bg-slate-900/50 rounded-lg border border-orange-500/20">
+                                        <div className="flex items-baseline gap-1 mb-1">
+                                            <span className="text-2xl font-bold text-white">₹{plan.price}</span>
+                                            <span className="text-gray-400 text-sm">/{plan.period}</span>
+                                        </div>
+                                        {plan.originalPrice && (
+                                            <div className="text-xs text-gray-500 line-through">
+                                                ₹{plan.originalPrice}/{plan.period}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Features */}
+                                    <ul className="space-y-2 mb-6">
+                                        {plan.features.map((f, idx) => (
+                                            <motion.li
+                                                key={idx}
+                                                initial={{ opacity: 0, x: -8 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: 0.3 + idx * 0.05 }}
+                                                className="flex gap-2 text-sm text-gray-300"
+                                            >
+                                                <div className="w-4 h-4 rounded-full bg-green-500/20 border border-green-500/50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                    <Check size={12} className="text-green-400" />
+                                                </div>
+                                                {f}
+                                            </motion.li>
+                                        ))}
+                                        {plan.missingFeatures?.map((f, idx) => (
+                                            <motion.li
+                                                key={idx}
+                                                initial={{ opacity: 0, x: -8 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{
+                                                    delay: 0.3 + plan.features.length * 0.05 + idx * 0.05,
+                                                }}
+                                                className="flex gap-2 text-sm text-gray-500 line-through opacity-60"
+                                            >
+                                                <div className="w-4 h-4 rounded-full bg-gray-700/50 border border-gray-600/50 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                                    <X size={12} className="text-gray-600" />
+                                                </div>
+                                                {f}
+                                            </motion.li>
+                                        ))}
+                                    </ul>
+
+                                    {/* Button */}
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        onClick={() => handleClick(plan.buttonText)}
+                                        className={`w-full py-3 px-4 rounded-lg font-semibold text-sm transition-all ${plan.isPremium
+                                                ? "bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white shadow-lg shadow-orange-500/30 border border-orange-500/30"
+                                                : "bg-orange-600/50 hover:bg-orange-600/70 text-white border border-orange-500/30"
+                                            }`}
+                                    >
+                                        {plan.buttonText} →
+                                    </motion.button>
+                                </div>
+                            </motion.div>
+                        ))}
+                    </div>
+
+                    {/* Footer Note */}
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className="text-center text-gray-500 text-xs mt-6 relative z-10 pt-4 border-t border-orange-500/20"
+                    >
+                        7-day free trial. Cancel anytime, no questions asked.
+                    </motion.p>
+                </motion.div>
             </div>
-        </div>
+        </>,
+        document.body
     );
 };
 

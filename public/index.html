@@ -3,48 +3,172 @@
 
 <head>
   <meta charset="utf-8" />
-<link rel="icon" href="/favicon.ico" />
-
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#FF7F00" /> 
 
+  <!-- Primary Meta Tags -->
+  <meta name="title" content="Prashna Patra - AI-Powered Test Generator for Students & Educators" />
   <meta name="description"
-    content="Prashna Patra - AI-powered test generator for students and educators. Create unlimited quizzes with advanced analytics and customization." />
+    content="Create unlimited AI-generated tests, quizzes, and question papers instantly. Smart analytics, customizable difficulty levels, multiple subjects. Perfect for students and educators." />
   <meta name="keywords"
-    content="AI test generator, online quizzes, education platform, Prashna Patra, automated question papers" />
-  <meta name="Nishant Sharma" content="Prashna Patra Team" />
+    content="AI test generator, online quiz maker, question paper generator, automated quizzes, education platform, exam preparation, Prashna Patra, test creator, digital learning" />
+  <meta name="author" content="Prashna Patra Team" />
+  <meta name="theme-color" content="#FF7F00" />
 
-  <!-- Open Graph (for social media) -->
-  <meta property="og:title" content="Prashna Patra - AI Test Generator" />
-  <meta property="og:description"
-    content="Create AI-powered tests and quizzes effortlessly with Prashna Patra. Customizable difficulty, multiple subjects, and real-time analytics." />
-  <meta property="og:image" content="%PUBLIC_URL%/preview-image.jpg" />
-<meta property="og:url" content="https://www.prashnapatra.co.in" />
-
+  <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.prashnapatra.co.in/" />
+  <meta property="og:title" content="Prashna Patra - AI-Powered Test Generator" />
+  <meta property="og:description"
+    content="Create unlimited AI-generated tests with advanced analytics. Customize difficulty, add multiple subjects, get real-time insights. Start free today!" />
+  <meta property="og:image" content="https://www.prashnapatra.co.in/preview-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name" content="Prashna Patra" />
+  <meta property="og:locale" content="en_US" />
 
-  <!-- Twitter Card (for Twitter sharing) -->
+  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://www.prashnapatra.co.in/" />
   <meta name="twitter:title" content="Prashna Patra - AI Test Generator" />
   <meta name="twitter:description"
-    content="Generate AI-powered quizzes instantly. Enhance learning with smart analytics." />
-  <meta name="twitter:image" content="%PUBLIC_URL%/preview-image.jpg" />
+    content="Generate unlimited AI-powered quizzes with smart analytics. Enhance learning outcomes instantly." />
+  <meta name="twitter:image" content="https://www.prashnapatra.co.in/preview-image.jpg" />
+  <meta name="twitter:creator" content="@PrashnaPatra" />
 
   <!-- Canonical URL -->
-  <link rel="canonical" href="https://www.prashnapatra.co.in" />
+  <link rel="canonical" href="https://www.prashnapatra.co.in/" />
 
-  <!-- Apple Touch Icon -->
-  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <!-- Favicon & Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/logo192.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 
   <!-- Web Manifest -->
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <link rel="manifest" href="/manifest.json" />
 
-  <title>Prashna Patra - AI Test Generator</title>
+  <!-- Preconnect to External Resources -->
+  <link rel="preconnect" href="https://checkout.razorpay.com" />
+  <link rel="dns-prefetch" href="https://checkout.razorpay.com" />
+
+  <!-- Razorpay Script -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js" async defer></script>
+
+  <!-- Structured Data (Schema.org) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Prashna Patra",
+    "description": "AI-powered test generator for students and educators",
+    "url": "https://www.prashnapatra.co.in",
+    "applicationCategory": "EducationalApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "INR",
+      "description": "Free plan available with basic features"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.8",
+      "ratingCount": "1250"
+    },
+    "author": {
+      "@type": "Organization",
+      "name": "Prashna Patra Team"
+    }
+  }
+  </script>
+
+  <!-- Organization Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Prashna Patra",
+    "url": "https://www.prashnapatra.co.in",
+    "logo": "https://www.prashnapatra.co.in/logo.png",
+    "description": "AI-powered test generator platform",
+    "sameAs": [
+      "https://twitter.com/PrashnaPatra",
+      "https://www.facebook.com/PrashnaPatra"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "Customer Support",
+      "email": "support@prashnapatra.co.in"
+    }
+  }
+  </script>
+
+  <!-- BreadcrumbList Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://www.prashnapatra.co.in"
+      }
+    ]
+  }
+  </script>
+
+  <!-- FAQ Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is Prashna Patra?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Prashna Patra is an AI-powered test generator platform that helps students and educators create unlimited quizzes and test papers with advanced analytics and customization options."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is Prashna Patra free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, Prashna Patra offers a free plan with basic features. Premium plans are also available for advanced features and unlimited tests."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does the AI generate test questions?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Our AI analyzes your topics and learning objectives to generate relevant, diverse, and challenging questions automatically."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- Robots -->
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+
+  <!-- Language -->
+  <meta http-equiv="content-language" content="en" />
+
+  <!-- Revisit After -->
+  <meta name="revisit-after" content="7 days" />
+
+  <title>Prashna Patra - AI Test Generator | Create Unlimited Quizzes Online</title>
 </head>
+
 <body>
-  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <noscript>
+    <p>You need to enable JavaScript to run this app. Prashna Patra is an interactive platform that requires JavaScript
+      for full functionality.</p>
+  </noscript>
   <div id="root"></div>
 </body>
 

@@ -3,6 +3,6 @@ User-agent: *
 Disallow:
 User-agent: *
 Allow: /
-Sitemap: https://prashna-patra-client.vercel.app/sitemap.xml
+Sitemap: https://www.prashnapatra.co.in/sitemap.xml
 
  

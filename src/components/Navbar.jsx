@@ -42,7 +42,7 @@ const Navbar = () => {
     }, [user?.planExpiry, user?.planType]);
 
     return (
-        <nav className="w-full  h-16 sticky top-0 z-10 backdrop-blur-xl bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-orange-500/20 shadow-2xl shadow-orange-500/10">
+        <nav className="w-full h-16 sticky top-0 z-50 backdrop-blur-xl bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 border-b border-orange-500/20 shadow-2xl shadow-orange-500/10">
             <div className="max-w-7xl mx-auto px-4 md:px-6 py-0 h-full flex justify-between items-center">
                 {/* Logo */}
                 <motion.div
@@ -131,7 +131,7 @@ const Navbar = () => {
                             </motion.button>
                         </>
                     ) : (
-                        <>
+                        <div className="flex items-center gap-3">
                             <motion.div
                                 whileHover={{ scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
@@ -154,7 +154,7 @@ const Navbar = () => {
                                     Sign Up
                                 </Link>
                             </motion.button>
-                        </>
+                        </div>
                     )}
                 </div>
 
@@ -272,7 +272,7 @@ const Navbar = () => {
                                     </motion.button>
                                 </>
                             ) : (
-                                <>
+                                <div className="space-y-3">
                                     <motion.div
                                         initial={{ opacity: 0, y: 10 }}
                                         animate={{ opacity: 1, y: 0 }}
@@ -281,7 +281,7 @@ const Navbar = () => {
                                         <Link
                                             to="/login"
                                             onClick={() => setMenuOpen(false)}
-                                            className="w-full px-4 py-3 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold border border-white/30 transition text-center"
+                                            className="w-full px-4 py-3 rounded-lg bg-white/10 hover:bg-white/20 text-white font-semibold border border-white/30 transition text-center block"
                                         >
                                             Login
                                         </Link>
@@ -294,12 +294,12 @@ const Navbar = () => {
                                         <Link
                                             to="/signup"
                                             onClick={() => setMenuOpen(false)}
-                                            className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold shadow-lg shadow-orange-500/30 border border-orange-400/50 transition text-center"
+                                            className="w-full px-4 py-3 rounded-lg bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold shadow-lg shadow-orange-500/30 border border-orange-400/50 transition text-center block"
                                         >
                                             Sign Up
                                         </Link>
                                     </motion.div>
-                                </>
+                                </div>
                             )}
                         </div>
                     </motion.div>

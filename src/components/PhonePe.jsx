@@ -22,9 +22,9 @@ const TakePayment = () => {
     ];
 
     const priceDetails = {
-        basePrice: 99,
-        discount: 50,
-        finalPrice: 1
+        basePrice: 100,
+        discount: 99,
+        finalPrice:1 
     };
 
     const trustBadges = [

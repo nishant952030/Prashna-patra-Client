@@ -16,6 +16,7 @@ import TakePayment from "../components/PhonePe.jsx";
 import PaymentSuccess from "../components/payments/Success.jsx";
 import TestFormUnAuthorized from "../forUnauthorized/TestForm.jsx";
 import TestAttemptGuest from "../forUnauthorized/Main.jsx";
+import TestFormLanding from "../forUnauthorized/TestFormLanding.jsx";
 const { createBrowserRouter } = require("react-router-dom");
 
 const router = createBrowserRouter([
@@ -25,7 +26,7 @@ const router = createBrowserRouter([
         children: [
             {
                 path: "/",
-                element: <TestFormUnAuthorized />,
+                element: <TestFormLanding/>,
             },
             {
                 path: "home",
